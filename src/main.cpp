@@ -2,14 +2,14 @@
 #include <string>
 #include <algorithm>
 
-#include "include/olcConsoleGameEngine.h"
+#include "include/olcConsoleGameEngineSDL.h"
 
 using namespace std;
 
-class OneLoneCoder_PathFinding : public olcConsoleGameEngine
+class PathFinding : public olcConsoleGameEngine
 {
 public:
-	OneLoneCoder_PathFinding()
+	PathFinding()
 	{
 		m_sAppName = L"Path Finding";
 	}
@@ -185,9 +185,9 @@ protected:
 			if(nSelectedNodeX >=0 && nSelectedNodeX < nMapWidth)
 				if (nSelectedNodeY >= 0 && nSelectedNodeY < nMapHeight)
 				{
-					if (m_keys[VK_SHIFT].bHeld)
+					if (m_keys[VK_LSHIFT].bHeld)
 						nodeStart = &nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX];
-					else if (m_keys[VK_CONTROL].bHeld)
+					else if (m_keys[VK_LCONTROL].bHeld)
 						nodeEnd = &nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX];
 					else
 						nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX].bObstacle = !nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX].bObstacle;
@@ -252,8 +252,8 @@ protected:
 
 int main()
 {
-	OneLoneCoder_PathFinding game;
-	game.ConstructConsole(160, 160, 6, 6);
-	game.Start();
+	PathFinding path;
+	path.ConstructConsole(1200, 800, 6, 6);
+	path.Start();
 	return 0;
 }
