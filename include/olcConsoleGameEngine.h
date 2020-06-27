@@ -127,7 +127,7 @@ http://www.twitch.tv/javidx9
 #error Please enable UNICODE for your compiler! VS: Project Properties -> General -> \
 Character Set -> Use Unicode. Thanks! - Javidx9
 #endif
-c
+
 
 #include <iostream>
 #include <chrono>
