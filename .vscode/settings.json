@@ -74,6 +74,9 @@
         "__tuple": "cpp",
         "ios": "cpp",
         "locale": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "codecvt": "cpp",
+        "filesystem": "cpp",
+        "stack": "cpp"
     }
 }

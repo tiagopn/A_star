@@ -2,7 +2,7 @@
 #include <string>
 #include <algorithm>
 
-#include "include/olcConsoleGameEngineSDL.h"
+#include "olcConsoleGameEngineSDL.h"
 
 using namespace std;
 
