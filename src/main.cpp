@@ -1,11 +1,37 @@
-//#include <iostream>
-//#include <string>
-//#include <algorithm>
+/*
 
-//#include "olcConsoleGameEngineSDL.h"
+Compiling in Linux
+	~~~~~~~~~~~~~~~~~~
+	You will need a modern C++ compiler, so update yours!
+	To compile use:
+
+	g++-(gcc version number) YourSource.cpp -o YourProgName -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17
+	
+	ex.: g++-9 main.cpp -o path -lX11 -lGL -lpthread -lpng -lstdc++fs -std=c++17
+
+	On some Linux configurations, the frame rate is locked to the refresh
+	rate of the monitor. This engine tries to unlock it but may not be
+	able to, in which case try launching your program like this:
+
+	vblank_mode=0 ./YourProgName
+
+	But the normal way is:
+
+	./YourProgName
+
+*/
+
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+#define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
-//using namespace std;
+using namespace std;
+
+#define NodePixelSize 6
 
 class Path : public olc::PixelGameEngine
 {
@@ -15,9 +41,9 @@ public:
 		sAppName = "Path";
 	}
 
-//private:
+private:
 
-	/*struct sNode
+	struct sNode
 	{
 		bool bObstacle = false;			// Is the node an obstruction?
 		bool bVisited = false;			// Have we searched this node before?
@@ -35,13 +61,12 @@ public:
 
 	sNode *nodeStart = nullptr;
 	sNode *nodeEnd = nullptr;
-	*/
+	
 
-//protected:
-	//virtual bool OnUserCreate() override
-	bool OnUserCreate() override
+protected:
+	virtual bool OnUserCreate()
 	{
-		/*
+		
 		// Create a 2D array of nodes - this is for convenience of rendering and construction
 		// and is not required for the algorithm to work - the nodes could be placed anywhere
 		// in any space, in multiple dimensions...
@@ -84,13 +109,13 @@ public:
 		// Manually positio the start and end markers so they are not nullptr
 		nodeStart = &nodes[(nMapHeight / 2) * nMapWidth + 1];
 		nodeEnd = &nodes[(nMapHeight / 2) * nMapWidth + nMapWidth-2];
-		*/
+		
 		return true;
 	}
 
 	bool Solve_AStar()
 	{
-		/*
+		
 		// Reset Navigation Graph - default all node states
 		for (int x = 0; x < nMapWidth; x++)
 			for (int y = 0; y < nMapHeight; y++)
@@ -171,15 +196,14 @@ public:
 					nodeNeighbour->fGlobalGoal = nodeNeighbour->fLocalGoal + heuristic(nodeNeighbour, nodeEnd);
 				}
 			}	
-		}*/
+		}
 
 		return true;
 	}
 
-	//virtual bool OnUserUpdate(float fElapsedTime) override
-	bool OnUserUpdate(float fElapsedTime) override
+	virtual bool OnUserUpdate(float fElapsedTime) 
 	{
-		/*int nNodeSize = 9;
+		int nNodeSize = 9;
 		int nNodeBorder = 2;
 
 		// Use integer division to nicely get cursor position in node space
@@ -221,20 +245,18 @@ public:
 			for (int y = 0; y < nMapHeight; y++)
 			{
 	
-				//FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, 
-				//	(x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, 
-				//	PIXEL_HALF, nodes[y * nMapWidth + x].bObstacle ? olc::WHITE : olc::BLUE);
-
-				FillCircle(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, nodes[y * nMapWidth + x].bObstacle ? olc::WHITE : olc::BLUE);
+				FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, 
+					NodePixelSize, NodePixelSize, 
+					nodes[y * nMapWidth + x].bObstacle ? olc::GREY : olc::BLUE);
 
 				if (nodes[y * nMapWidth + x].bVisited)
-					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, olc::BLUE);
+					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, NodePixelSize, NodePixelSize, olc::DARK_CYAN);
 
 				if(&nodes[y * nMapWidth + x] == nodeStart)
-					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, olc::GREEN);
+					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, NodePixelSize, NodePixelSize, olc::GREEN);
 
 				if(&nodes[y * nMapWidth + x] == nodeEnd)
-					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, olc::RED);						
+					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, NodePixelSize, NodePixelSize, olc::RED);						
 				
 			}
 
@@ -252,7 +274,7 @@ public:
 				// Set next node to this node's parent
 				p = p->parent;
 			}
-		}*/
+		}
 
 		return true;
 	}
@@ -260,9 +282,9 @@ public:
 };
 
 int main()
-{
+{	
 	Path path;
-	if(path.Construct(256, 240, 4, 4))
+	if(path.Construct(160, 160, NodePixelSize, NodePixelSize))
 		path.Start();
 	return 0;
 }

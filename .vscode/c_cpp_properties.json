@@ -3,7 +3,6 @@
         {
             "name": "Linux",
             "includePath": [
-                "/home/tiago/MyProjects/A_star/include/**",
                 "/home/tiago/MyProjects/A_star/**",
                 "/home/tiago/MyProjects/A_star/src/**"
             ],
