@@ -8,9 +8,9 @@
                 "/home/tiago/MyProjects/A_star/src/**"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/g++-7",
+            "compilerPath": "/usr/bin/g++-9",
             "cStandard": "c11",
-            "cppStandard": "c++14",
+            "cppStandard": "c++17",
             "intelliSenseMode": "gcc-x64"
         }
     ],

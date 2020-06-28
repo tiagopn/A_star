@@ -1,22 +1,23 @@
-#include <iostream>
-#include <string>
-#include <algorithm>
+//#include <iostream>
+//#include <string>
+//#include <algorithm>
 
-#include "olcConsoleGameEngineSDL.h"
+//#include "olcConsoleGameEngineSDL.h"
+#include "olcPixelGameEngine.h"
 
-using namespace std;
+//using namespace std;
 
-class PathFinding : public olcConsoleGameEngine
+class Path : public olc::PixelGameEngine
 {
 public:
-	PathFinding()
+	Path()
 	{
-		m_sAppName = L"Path Finding";
+		sAppName = "Path";
 	}
 
-private:
+//private:
 
-	struct sNode
+	/*struct sNode
 	{
 		bool bObstacle = false;			// Is the node an obstruction?
 		bool bVisited = false;			// Have we searched this node before?
@@ -34,11 +35,13 @@ private:
 
 	sNode *nodeStart = nullptr;
 	sNode *nodeEnd = nullptr;
-	
+	*/
 
-protected:
-	virtual bool OnUserCreate()
+//protected:
+	//virtual bool OnUserCreate() override
+	bool OnUserCreate() override
 	{
+		/*
 		// Create a 2D array of nodes - this is for convenience of rendering and construction
 		// and is not required for the algorithm to work - the nodes could be placed anywhere
 		// in any space, in multiple dimensions...
@@ -67,25 +70,27 @@ protected:
 					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 0) * nMapWidth + (x + 1)]);
 
 				// We can also connect diagonally
-				/*if (y>0 && x>0)
-					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x - 1)]);
-				if (y<nMapHeight-1 && x>0)
-					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x - 1)]);
-				if (y>0 && x<nMapWidth-1)
-					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x + 1)]);
-				if (y<nMapHeight - 1 && x<nMapWidth-1)
-					nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x + 1)]);
-				*/
+				//if (y>0 && x>0)
+				//	nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x - 1)]);
+				//if (y<nMapHeight-1 && x>0)
+				//	nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x - 1)]);
+				//if (y>0 && x<nMapWidth-1)
+				//	nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y - 1) * nMapWidth + (x + 1)]);
+				//if (y<nMapHeight - 1 && x<nMapWidth-1)
+				//	nodes[y*nMapWidth + x].vecNeighbours.push_back(&nodes[(y + 1) * nMapWidth + (x + 1)]);
+				
 			}
 
 		// Manually positio the start and end markers so they are not nullptr
 		nodeStart = &nodes[(nMapHeight / 2) * nMapWidth + 1];
 		nodeEnd = &nodes[(nMapHeight / 2) * nMapWidth + nMapWidth-2];
+		*/
 		return true;
 	}
 
 	bool Solve_AStar()
 	{
+		/*
 		// Reset Navigation Graph - default all node states
 		for (int x = 0; x < nMapWidth; x++)
 			for (int y = 0; y < nMapHeight; y++)
@@ -166,28 +171,30 @@ protected:
 					nodeNeighbour->fGlobalGoal = nodeNeighbour->fLocalGoal + heuristic(nodeNeighbour, nodeEnd);
 				}
 			}	
-		}
+		}*/
 
 		return true;
 	}
 
-	virtual bool OnUserUpdate(float fElapsedTime)
+	//virtual bool OnUserUpdate(float fElapsedTime) override
+	bool OnUserUpdate(float fElapsedTime) override
 	{
-		int nNodeSize = 9;
+		/*int nNodeSize = 9;
 		int nNodeBorder = 2;
 
 		// Use integer division to nicely get cursor position in node space
-		int nSelectedNodeX = m_mousePosX / nNodeSize;
-		int nSelectedNodeY = m_mousePosY / nNodeSize;
+		int nSelectedNodeX = GetMouseX() / nNodeSize;
+		int nSelectedNodeY = GetMouseY() / nNodeSize;
 
-		if (m_mouse[0].bReleased) // Use mouse to draw maze, shift and ctrl to place start and end
+		if (GetMouse(0).bReleased) // Use mouse to draw maze, shift and ctrl to place start and end
 		{
 			if(nSelectedNodeX >=0 && nSelectedNodeX < nMapWidth)
 				if (nSelectedNodeY >= 0 && nSelectedNodeY < nMapHeight)
 				{
-					if (m_keys[VK_LSHIFT].bHeld)
+					if (GetKey(olc::Key::SHIFT).bHeld)
+
 						nodeStart = &nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX];
-					else if (m_keys[VK_LCONTROL].bHeld)
+					else if (GetKey(olc::Key::CTRL).bHeld)
 						nodeEnd = &nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX];
 					else
 						nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX].bObstacle = !nodes[nSelectedNodeY * nMapWidth + nSelectedNodeX].bObstacle;
@@ -198,14 +205,14 @@ protected:
 
 		// Draw Connections First - lines from this nodes position to its
 		// connected neighbour node positions
-		Fill(0, 0, ScreenWidth(), ScreenHeight(), L' ');
+		FillRect(0, 0, ScreenWidth(), ScreenHeight(), olc::BLACK);
 		for (int x = 0; x < nMapWidth; x++)
 			for (int y = 0; y < nMapHeight; y++)
 			{
 				for (auto n : nodes[y*nMapWidth + x].vecNeighbours)
 				{
 					DrawLine(x*nNodeSize + nNodeSize / 2, y*nNodeSize + nNodeSize / 2,
-						n->x*nNodeSize + nNodeSize / 2, n->y*nNodeSize + nNodeSize / 2, PIXEL_SOLID, FG_DARK_BLUE);
+						n->x*nNodeSize + nNodeSize / 2, n->y*nNodeSize + nNodeSize / 2, olc::DARK_BLUE);
 				}
 			}
 
@@ -214,18 +221,20 @@ protected:
 			for (int y = 0; y < nMapHeight; y++)
 			{
 	
-				Fill(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, 
-					(x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, 
-					PIXEL_HALF, nodes[y * nMapWidth + x].bObstacle ? FG_WHITE : FG_BLUE);
+				//FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, 
+				//	(x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, 
+				//	PIXEL_HALF, nodes[y * nMapWidth + x].bObstacle ? olc::WHITE : olc::BLUE);
+
+				FillCircle(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, nodes[y * nMapWidth + x].bObstacle ? olc::WHITE : olc::BLUE);
 
 				if (nodes[y * nMapWidth + x].bVisited)
-					Fill(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, PIXEL_SOLID, FG_BLUE);
+					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, olc::BLUE);
 
 				if(&nodes[y * nMapWidth + x] == nodeStart)
-					Fill(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, PIXEL_SOLID, FG_GREEN);
+					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, olc::GREEN);
 
 				if(&nodes[y * nMapWidth + x] == nodeEnd)
-					Fill(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, PIXEL_SOLID, FG_RED);						
+					FillRect(x*nNodeSize + nNodeBorder, y*nNodeSize + nNodeBorder, (x + 1)*nNodeSize - nNodeBorder, (y + 1)*nNodeSize - nNodeBorder, olc::RED);						
 				
 			}
 
@@ -238,12 +247,12 @@ protected:
 			while (p->parent != nullptr)
 			{
 				DrawLine(p->x*nNodeSize + nNodeSize / 2, p->y*nNodeSize + nNodeSize / 2,
-					p->parent->x*nNodeSize + nNodeSize / 2, p->parent->y*nNodeSize + nNodeSize / 2, PIXEL_SOLID, FG_YELLOW);
+					p->parent->x*nNodeSize + nNodeSize / 2, p->parent->y*nNodeSize + nNodeSize / 2, olc::YELLOW);
 				
 				// Set next node to this node's parent
 				p = p->parent;
 			}
-		}
+		}*/
 
 		return true;
 	}
@@ -252,8 +261,8 @@ protected:
 
 int main()
 {
-	PathFinding path;
-	path.ConstructConsole(1200, 800, 6, 6);
-	path.Start();
+	Path path;
+	if(path.Construct(256, 240, 4, 4))
+		path.Start();
 	return 0;
 }
